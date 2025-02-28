@@ -62,3 +62,15 @@ console.log(username, email, phoneNumber, address,userId);
     res.status(401).json(err);
   }
 };
+
+
+exports.getAllUsers=async(req,res)=>{
+  console.log("inside getAllUsers function");
+
+  try {
+    const allUsers = await users.find();
+    res.status(200).json(allUsers);
+  } catch (error) {
+    res.status(401).json(err);
+  }
+}
