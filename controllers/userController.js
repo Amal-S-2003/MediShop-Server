@@ -27,16 +27,21 @@ exports.register = async (req, res) => {
   console.log("inside register function");
   
   const { username, email, phoneNumber, address, password } = req.body;
+  console.log(username, email, phoneNumber, address, password);
   
   try {
     const existingUser = await users.findOne({ email });
     if (existingUser) {
       res.status(406).json("User with this email is already exist");
     } else {
+      console.log(username, email, phoneNumber, address, password,"  console.log(username, email, phoneNumber, password);");
+
       const newUser = new users({
         username, email, phoneNumber, address, password
       });
       await newUser.save();
+      console.log("newUser",newUser);
+      
       res.status(200).json(newUser);
     }
   } catch (err) {
@@ -62,15 +67,13 @@ console.log(username, email, phoneNumber, address,userId);
     res.status(401).json(err);
   }
 };
-
-
-exports.getAllUsers=async(req,res)=>{
-  console.log("inside getAllUsers function");
+exports.getAllUsers = async (req, res) => {
+  console.log("Inside getAllUsers function");
 
   try {
-    const allUsers = await users.find();
+    const allUsers = await users.find({ role: { $ne: "admin" } }); // Exclude admin users
     res.status(200).json(allUsers);
   } catch (error) {
-    res.status(401).json(err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
-}
+};

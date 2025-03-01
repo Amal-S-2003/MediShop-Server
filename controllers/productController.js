@@ -56,37 +56,33 @@ exports.addProduct = async (req, res) => {
 exports.editProduct = async (req, res) => {
   console.log("Inside edit Product")
   console.log(req.body);
-  
+   
   const {
     name,
     price,
     totalQuantity,
-    descriptions,
-    specifications,
-    productImage,
+    productImage, 
   } = req.body;
-  console.log( name,
-    price,
-    totalQuantity,
-    descriptions,
-    specifications,
-    productImage,);
-  
+  let parsedDescriptions = [];
+  let parsedSpecifications = [];
+ 
+  if (req.body.descriptions) {
+    parsedDescriptions = Array.isArray(req.body.descriptions)
+      ? req.body.descriptions
+      : JSON.parse(req.body.descriptions);
+  }
+
+  if (req.body.specifications) {
+    parsedSpecifications = Array.isArray(req.body.specifications)
+      ? req.body.specifications 
+      : JSON.parse(req.body.specifications);
+  }
+
   const uploadImage = req.file ? req.file.filename : productImage;
-  const { pid } = req.params;
+  const { pid } = req.params; 
   console.log("Product ID:", pid);
 
   try {
-    // ✅ Parse descriptions & specifications only if they are strings
-    const parsedDescriptions =
-      typeof descriptions === "string"
-        ? JSON.parse(descriptions)
-        : descriptions;
-    const parsedSpecifications =
-      typeof specifications === "string"
-        ? JSON.parse(specifications)
-        : specifications;
-
     const updateProduct = await products.findByIdAndUpdate(
       { _id: pid },
       {
