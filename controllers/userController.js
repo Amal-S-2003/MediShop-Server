@@ -4,11 +4,11 @@ exports.login = async (req, res) => {
   console.log("inside login function");
 
   const { email, password } = req.body;
-  console.log(email,password);
-  
+  console.log(email, password);
+
   try {
     const existingUser = await users.findOne({ email, password });
-    if (existingUser) { 
+    if (existingUser) {
       // generate token
       const token = jwt.sign(
         { userId: existingUser._id },
@@ -25,23 +25,34 @@ exports.login = async (req, res) => {
 
 exports.register = async (req, res) => {
   console.log("inside register function");
-  
+
   const { username, email, phoneNumber, address, password } = req.body;
   console.log(username, email, phoneNumber, address, password);
-  
+
   try {
     const existingUser = await users.findOne({ email });
     if (existingUser) {
       res.status(406).json("User with this email is already exist");
     } else {
-      console.log(username, email, phoneNumber, address, password,"  console.log(username, email, phoneNumber, password);");
+      console.log(
+        username,
+        email,
+        phoneNumber,
+        address,
+        password,
+        "  console.log(username, email, phoneNumber, password);"
+      );
 
       const newUser = new users({
-        username, email, phoneNumber, address, password
+        username,
+        email,
+        phoneNumber,
+        address,
+        password,
       });
       await newUser.save();
-      console.log("newUser",newUser);
-      
+      console.log("newUser", newUser);
+
       res.status(200).json(newUser);
     }
   } catch (err) {
@@ -51,17 +62,19 @@ exports.register = async (req, res) => {
 
 exports.editProfile = async (req, res) => {
   console.log("inside editProfile function");
-  
-  const { username, email, phoneNumber, address} = req.body;
+
+  const { username, email, phoneNumber, address } = req.body;
   const userId = req.payload;
-console.log(username, email, phoneNumber, address,userId);
+  console.log(username, email, phoneNumber, address, userId);
 
   try {
- 
-      await users.findByIdAndUpdate(userId, {
-        username, email, phoneNumber, address
-      });
-    
+    await users.findByIdAndUpdate(userId, {
+      username,
+      email,
+      phoneNumber,
+      address,
+    });
+
     res.status(200).json("Profile Updated SuccessFully");
   } catch (err) {
     res.status(401).json(err);
@@ -73,6 +86,16 @@ exports.getAllUsers = async (req, res) => {
   try {
     const allUsers = await users.find({ role: { $ne: "admin" } }); // Exclude admin users
     res.status(200).json(allUsers);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+exports.getUserDetails = async (req, res) => {
+  console.log("Inside getAllUsers function");
+  const userId = req.payload;
+  try {
+    const user = await users.find({ _id: userId }); // Exclude admin users
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
