@@ -4,6 +4,7 @@ const userController = require("../controllers/userController");
 const cartController = require("../controllers/cartController");
 const brandController = require("../controllers/brandController");
 const categoryController = require("../controllers/categoryController");
+const orderController = require("../controllers/orderController");
 const multerConfig = require("../middleware/multerMiddleWare");
 const jwtMiddleWare = require("../middleware/jwtMiddleware");
 const router=express.Router()
@@ -11,6 +12,7 @@ const router=express.Router()
 router.post('/register',userController.register)
 router.post('/login',userController.login)
 router.post('/edit-profile',jwtMiddleWare,userController.editProfile)
+
 
 router.get('/get-all-users',userController.getAllUsers)
 router.get('/get-user-details',jwtMiddleWare,userController.getUserDetails)
@@ -54,6 +56,9 @@ router.post("/add-to-cart", jwtMiddleWare, cartController.addToCart);
 router.put("/update-cart/:pid", jwtMiddleWare, cartController.updateCartItem);
 router.delete("/remove-cartitem", jwtMiddleWare, cartController.removeCartItem);
 router.delete("/clear-cart/:cartId", jwtMiddleWare, cartController.clearCart);
+
+router.post("/place-order", jwtMiddleWare, orderController.createOrder);
+router.get("/get-user-orders", jwtMiddleWare,orderController.getOrders);
 
 
 module.exports=router;  
