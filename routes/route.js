@@ -59,6 +59,8 @@ router.delete("/clear-cart/:cartId", jwtMiddleWare, cartController.clearCart);
 
 router.post("/place-order", jwtMiddleWare, orderController.createOrder);
 router.get("/get-user-orders", jwtMiddleWare,orderController.getOrders);
+router.get("/get-all-orders", jwtMiddleWare,orderController.getAllOrders);
+router.post("/change-status", jwtMiddleWare,orderController.changeDeliveryStatus);
 
 
 module.exports=router;  

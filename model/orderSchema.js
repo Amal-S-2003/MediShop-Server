@@ -7,6 +7,10 @@ const OrderSchema = new mongoose.Schema(
       ref: "users",
       required: true,
     },
+    username: { type: String, required: true },
+    phoneNumber: { type: String, required: true },
+    email: { type: String, required: true },
+
     products: [
       {
         name: { type: String, required: true },
@@ -17,7 +21,11 @@ const OrderSchema = new mongoose.Schema(
       },
     ],
     address: { type: String, required: true },
-    paymentMethod: { type: String, enum: ["credit_card", "paypal", "gpay", "cod"], required: true },
+    paymentMethod: {
+      type: String,
+      enum: ["credit_card", "paypal", "gpay", "cod"],
+      required: true,
+    },
     subtotal: { type: Number, required: true },
     shippingFee: { type: Number, required: true },
     totalPrice: { type: Number, required: true },
