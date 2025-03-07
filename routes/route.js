@@ -5,13 +5,14 @@ const cartController = require("../controllers/cartController");
 const brandController = require("../controllers/brandController");
 const categoryController = require("../controllers/categoryController");
 const orderController = require("../controllers/orderController");
+const reviewController = require("../controllers/reviewController");
 const multerConfig = require("../middleware/multerMiddleWare");
 const jwtMiddleWare = require("../middleware/jwtMiddleware");
 const router=express.Router()
 
 router.post('/register',userController.register)
 router.post('/login',userController.login)
-router.post('/edit-profile',jwtMiddleWare,userController.editProfile)
+router.put('/edit-profile',jwtMiddleWare,userController.editProfile)
 
 
 router.get('/get-all-users',userController.getAllUsers)
@@ -61,7 +62,11 @@ router.post("/place-order", jwtMiddleWare, orderController.createOrder);
 router.get("/get-user-orders", jwtMiddleWare,orderController.getOrders);
 router.get("/get-all-orders", jwtMiddleWare,orderController.getAllOrders);
 router.post("/change-status", jwtMiddleWare,orderController.changeDeliveryStatus);
+router.put("/cancel-order", jwtMiddleWare,orderController.cancelOrder);
 
+router.post("/add-review", jwtMiddleWare,reviewController.addNewReview);
+router.get("/get-reviews/:productId", jwtMiddleWare,reviewController.getProductReviews);
+router.get("/get-average-rating/:productId", jwtMiddleWare,reviewController.getAverageRating);
 
 module.exports=router;  
   

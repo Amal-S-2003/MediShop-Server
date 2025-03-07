@@ -1,4 +1,7 @@
 const products = require("../Model/productShema");
+const categories = require("../model/categorySchema");
+const brands = require("../model/brandSchema");
+
 exports.addProduct = async (req, res) => {
   try {
     const { name, price, totalQuantity, brand, category } = req.body;
@@ -31,6 +34,7 @@ exports.addProduct = async (req, res) => {
       productImage
     );
 
+    // Create and save the new product
     const newProduct = new products({
       name,
       productImage,
@@ -43,6 +47,21 @@ exports.addProduct = async (req, res) => {
     });
 
     await newProduct.save();
+
+    // Update category count
+    if (category) {
+      console.log("category is present",category);
+      
+      const result=await categories.findOneAndUpdate({categoryName:category}, { $inc: { productCount: 1 } });
+    }
+
+    // Update brand count
+    if (brand) {
+      console.log("brand is present",brand);
+
+      const result=await brands.findOneAndUpdate({brandName:brand}, { $inc: { productCount: 1 } });
+    }
+
     res
       .status(201)
       .json({ message: "Product added successfully", product: newProduct });
@@ -52,7 +71,59 @@ exports.addProduct = async (req, res) => {
       .json({ message: "Error adding product", error: error.message });
   }
 };
+// exports.addProduct = async (req, res) => {
+//   try {
+//     const { name, price, totalQuantity, brand, category } = req.body;
+//     const productImage = req.file ? req.file.filename : null;
 
+//     // Parse descriptions and specifications safely
+//     let parsedDescriptions = [];
+//     let parsedSpecifications = [];
+
+//     if (req.body.descriptions) {
+//       parsedDescriptions = Array.isArray(req.body.descriptions)
+//         ? req.body.descriptions
+//         : JSON.parse(req.body.descriptions);
+//     }
+
+//     if (req.body.specifications) {
+//       parsedSpecifications = Array.isArray(req.body.specifications)
+//         ? req.body.specifications
+//         : JSON.parse(req.body.specifications);
+//     }
+
+//     console.log(
+//       name,
+//       price,
+//       totalQuantity,
+//       parsedDescriptions,
+//       parsedSpecifications,
+//       brand,
+//       category,
+//       productImage
+//     );
+
+//     const newProduct = new products({
+//       name,
+//       productImage,
+//       price,
+//       totalQuantity,
+//       descriptions: parsedDescriptions,
+//       specifications: parsedSpecifications,
+//       brand,
+//       category,
+//     });
+
+//     await newProduct.save();
+//     res
+//       .status(201)
+//       .json({ message: "Product added successfully", product: newProduct });
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({ message: "Error adding product", error: error.message });
+//   }
+// };
 exports.editProduct = async (req, res) => {
   console.log("Inside edit Product")
   console.log(req.body);

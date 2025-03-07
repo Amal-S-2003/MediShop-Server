@@ -40,7 +40,6 @@ exports.register = async (req, res) => {
         phoneNumber,
         address,
         password,
-        "  console.log(username, email, phoneNumber, password);"
       );
 
       const newUser = new users({
@@ -48,7 +47,7 @@ exports.register = async (req, res) => {
         email,
         phoneNumber,
         address,
-        password,
+        password, 
       });
       await newUser.save();
       console.log("newUser", newUser);
@@ -56,6 +55,8 @@ exports.register = async (req, res) => {
       res.status(200).json(newUser);
     }
   } catch (err) {
+    console.log(err);
+    
     res.status(401).json(err);
   }
 };

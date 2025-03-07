@@ -1,5 +1,4 @@
 const categories = require("../model/categorySchema");
-
 // Add a new category
 exports.addCategory = async (req, res) => {
   try {
