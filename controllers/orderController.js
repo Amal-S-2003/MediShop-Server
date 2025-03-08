@@ -60,7 +60,6 @@ exports.getAllOrders = async (req, res) => {
     const allOrders = await orders.find();
 
     res.status(200).json(allOrders);
-    console.log("allOrders", allOrders);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch cart" });
   }

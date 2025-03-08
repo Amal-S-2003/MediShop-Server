@@ -5,6 +5,7 @@ const cartController = require("../controllers/cartController");
 const brandController = require("../controllers/brandController");
 const categoryController = require("../controllers/categoryController");
 const orderController = require("../controllers/orderController");
+const favouriteController = require("../controllers/favouriteController");
 const reviewController = require("../controllers/reviewController");
 const multerConfig = require("../middleware/multerMiddleWare");
 const jwtMiddleWare = require("../middleware/jwtMiddleware");
@@ -67,6 +68,10 @@ router.put("/cancel-order", jwtMiddleWare,orderController.cancelOrder);
 router.post("/add-review", jwtMiddleWare,reviewController.addNewReview);
 router.get("/get-reviews/:productId", jwtMiddleWare,reviewController.getProductReviews);
 router.get("/get-average-rating/:productId", jwtMiddleWare,reviewController.getAverageRating);
+
+router.post("/add-to-favourite", jwtMiddleWare,favouriteController.addToFavourite);
+router.get("/get-user-favourites", jwtMiddleWare,favouriteController.getUserFavourites);
+router.delete("/remove-from-favourites/:productId", jwtMiddleWare,favouriteController.removeFavourite);
 
 module.exports=router;  
   
