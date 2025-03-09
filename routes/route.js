@@ -6,9 +6,11 @@ const brandController = require("../controllers/brandController");
 const categoryController = require("../controllers/categoryController");
 const orderController = require("../controllers/orderController");
 const favouriteController = require("../controllers/favouriteController");
+const blogController = require("../controllers/blogController");
 const reviewController = require("../controllers/reviewController");
 const multerConfig = require("../middleware/multerMiddleWare");
 const jwtMiddleWare = require("../middleware/jwtMiddleware");
+const upload = require("../middleware/blogMiddleware");
 const router=express.Router()
 
 router.post('/register',userController.register)
@@ -72,6 +74,18 @@ router.get("/get-average-rating/:productId", jwtMiddleWare,reviewController.getA
 router.post("/add-to-favourite", jwtMiddleWare,favouriteController.addToFavourite);
 router.get("/get-user-favourites", jwtMiddleWare,favouriteController.getUserFavourites);
 router.delete("/remove-from-favourites/:productId", jwtMiddleWare,favouriteController.removeFavourite);
+
+
+
+router.post("/add-blog", jwtMiddleWare, upload.fields([
+    { name: "thumbnail", maxCount: 1 }, // Single thumbnail
+    { name: "images" } // Multiple images
+  ]),blogController.addBlog);
+  
+  router.get("/get-blog/:id",jwtMiddleWare, blogController.getBlogById);
+  router.get("/get-all-blogs",jwtMiddleWare, blogController.getAllBlogs);
+
+  router.delete("/delete-blog/:blogId", jwtMiddleWare, blogController.deleteBlog);
 
 module.exports=router;  
   
