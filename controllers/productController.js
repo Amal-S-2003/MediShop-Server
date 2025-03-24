@@ -1,4 +1,4 @@
-const products = require("../Model/productShema");
+const products = require("../model/productShema");
 const categories = require("../model/categorySchema");
 const brands = require("../model/brandSchema");
 

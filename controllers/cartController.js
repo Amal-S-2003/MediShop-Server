@@ -1,6 +1,6 @@
 const carts = require("../model/cartSchema");
 // const products=require('../model/productShema')
-const products = require("../Model/productShema");
+const products = require("../model/productShema");
 
 // Get Cart Items
 exports.getCart = async (req, res) => {
