@@ -27,8 +27,7 @@ exports.register = async (req, res) => {
   console.log("inside register function");
 
   const { username, email, phoneNumber, address, password } = req.body;
-  console.log(username, email, phoneNumber, address, password);
-
+ 
   try {
     const existingUser = await users.findOne({ email });
     if (existingUser) {
@@ -50,8 +49,6 @@ exports.register = async (req, res) => {
         password, 
       });
       await newUser.save();
-      console.log("newUser", newUser);
-
       res.status(200).json(newUser);
     }
   } catch (err) {

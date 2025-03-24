@@ -2,9 +2,11 @@ const reviews = require("../model/reviewSchema");
 
 // Add a new review
 exports.addNewReview=async(req,res)=>{
+  const { productId, userId, username, rating, comment } = req.body;
+  console.log("ADD review",productId, userId, username, rating, comment);
+  
 // router.post("/", async (req, res) => {
   try {
-    const { productId, userId, username, rating, comment } = req.body;
     const review = new reviews({ productId, userId, username, rating, comment });
     await review.save();
     res.status(201).json(review);
